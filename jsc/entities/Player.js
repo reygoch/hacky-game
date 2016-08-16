@@ -1,9 +1,14 @@
 const Player = function Player (sprite) {
 	if (!sprite) return
-
+	
+	let health = 100
 	let active = false
+
+	const radius = 35
 	const position = {x : 0, y : 0}
 	const spritesheet = new Spritesheet(sprite, 5, 2)
+
+	const contains = (x, y) => Math.sqrt(Math.pow(position.x - x, 2) + Math.pow(position.y - y, 2)) <= radius
 	
 	this.init = function playerInit (con, data) {
 		sprite.setContext(con)
@@ -12,11 +17,22 @@ const Player = function Player (sprite) {
 	}
 
 	this.update = function playerUpdate (dlt, data) {
-		if (position.x < data.world.width)
-		position.x += 0.05*dlt
+		const m = data.mouse
+		
+		// check if player is clicked
+		if (m.down && contains(m.x, m.y))
+			active = true
+		else if (m.up)
+			active = false
+
+		if (active) {
+			position.x = m.x
+			position.y = m.y
+		}
 	}
 
 	this.render = function playerRender (con) {
-		spritesheet.draw(0, position.x, position.y)
+		let index = active ? 5 : 0
+		spritesheet.draw(index, position.x, position.y)
 	}
 }

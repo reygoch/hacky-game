@@ -81,6 +81,11 @@ const Hacky = function Hacky (options) {
 		playerSpritesheet.draw(0, 35, 35)
 		starSprite.draw(80, 80)
 	}
+
+	// event subscription
+	can.addEventListener('mouseup', (e) => {data.mouse.down = false; data.mouse.up = true})
+	can.addEventListener('mousedown', (e) => {data.mouse.down = true; data.mouse.up = false})
+	can.addEventListener('mousemove', (e) => {data.mouse.x = e.offsetX; data.mouse.y = e.offsetY})
 }
 
 // utility for simply drawing images on canvas

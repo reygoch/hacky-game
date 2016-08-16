@@ -1,6 +1,8 @@
+const playerImg =
+	document.getElementById('player-spritesheet')
 
 const player =
-	new Player(new Sprite(document.getElementById('player-spritesheet')))
+	new Player(new Sprite(playerImg))
 
 const game = new Hacky()
 	  game.addToScene(player)
