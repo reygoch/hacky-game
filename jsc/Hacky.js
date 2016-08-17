@@ -39,6 +39,8 @@ const Hacky = function Hacky (options) {
 		}
 	}
 
+	this.mouse = () => data.mouse.position
+
 	// engine loop functions
 	const init = () => {scn.forEach((x) => {x.init(con, data)})}
 
@@ -98,13 +100,17 @@ const Hacky = function Hacky (options) {
 	can.addEventListener('mousemove', mousemove)
 
 	// touch event subscriptions
+	/*
 	can.addEventListener('touchend', mouseup)
 	can.addEventListener('touchstart', mousedown)
 	can.addEventListener('touchmove', touchmove)
+	*/
 }
 
 // utility for simply drawing images on canvas
-function Sprite (img, con, center = false) {
+function Sprite (img, center, con) {
+	center = !!center
+
 	const x = (sx) => sx - (center ? img.width / 2 : 0),
 		  y = (sy) => sy - (center ? img.height / 2 : 0)
 
@@ -160,7 +166,9 @@ function Vector (x, y) {
 	this.y = y
 }
 
+Vector.prototype.scalar = function () {return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))}
 Vector.prototype.add = function (v) {this.x += v.x; this.y += v.y; return this}
+Vector.prototype.sub = function (v) {this.x -= v.x; this.y -= v.y; return this}
 Vector.prototype.scale = function (s) {this.x *= s; this.y *= s; return this}
 Vector.prototype.fromPoints = function (p1, p2) {this.x = p2.x - p1.x; this.y = p2.y - p1.y; return this}
 Vector.prototype.reflect = function (direction) {
@@ -169,5 +177,11 @@ Vector.prototype.reflect = function (direction) {
 	else if (direction == 'vertical')
 		this.x *= -1
 
+	return this
+}
+Vector.prototype.normalize = function () {
+	const scalar = this.scalar()
+	this.x /= scalar
+	this.y /= scalar
 	return this
 }
