@@ -5,10 +5,12 @@ const Player = function Player (sprite) {
 	let active = false
 
 	const radius = 35
-	const position = {x : 0, y : 0}
+	const deceleration = 0.95
+	const position = new Point(0, 0)
+	const velocity = new Vector(0, 0)
 	const spritesheet = new Spritesheet(sprite, 5, 2)
 
-	const contains = (x, y) => Math.sqrt(Math.pow(position.x - x, 2) + Math.pow(position.y - y, 2)) <= radius
+	const contains = (point) => Math.sqrt(Math.pow(position.x - point.x, 2) + Math.pow(position.y - point.y, 2)) <= radius
 	
 	this.init = function playerInit (con, data) {
 		sprite.setContext(con)
@@ -18,17 +20,29 @@ const Player = function Player (sprite) {
 
 	this.update = function playerUpdate (dlt, data) {
 		const m = data.mouse
-		
+		const w = data.world
+
+		if (active)
+			velocity.fromPoints(position, m.position)
+		else
+			velocity.scale(deceleration)
+
+		if (position.x - radius <= 0 || position.x + radius >= w.width)
+			velocity.reflect('vertical')
+
+		if (position.y - radius <= 0 || position.y + radius >= w.height)
+			velocity.reflect('horizontal')
+
 		// check if player is clicked
-		if (m.down && contains(m.x, m.y))
+		if (m.down && contains(m.position))
 			active = true
 		else if (m.up)
 			active = false
 
-		if (active) {
-			position.x = m.x
-			position.y = m.y
-		}
+		if (active)
+			position.moveToPoint(m.position)
+		else
+			position.moveByVector(velocity)
 	}
 
 	this.render = function playerRender (con) {

@@ -28,8 +28,7 @@ const Hacky = function Hacky (options) {
 		prevTime : 0,
 
 		mouse : {
-			x : 0,
-			y : 0,
+			position : new Point(0, 0),
 			up : false,
 			down : false
 		},
@@ -85,7 +84,7 @@ const Hacky = function Hacky (options) {
 	// event subscription
 	can.addEventListener('mouseup', (e) => {data.mouse.down = false; data.mouse.up = true})
 	can.addEventListener('mousedown', (e) => {data.mouse.down = true; data.mouse.up = false})
-	can.addEventListener('mousemove', (e) => {data.mouse.x = e.offsetX; data.mouse.y = e.offsetY})
+	can.addEventListener('mousemove', (e) => {data.mouse.position.moveTo(e.offsetX, e.offsetY)})
 }
 
 // utility for simply drawing images on canvas
@@ -127,4 +126,32 @@ function Spritesheet (sprite, columns, rows) {
 
 		sprite.draw(sx(index), sy(index), w, h, dx, dy, w, h)
 	}
+}
+
+// point class, for when I want to make a point ;D
+function Point (x, y) {
+	this.x = x
+	this.y = y
+}
+
+Point.prototype.moveTo = function (x, y) {this.x = x; this.y = y; return this}
+Point.prototype.moveToPoint = function (point) {this.x = point.x; this.y = point.y; return this}
+Point.prototype.moveByVector = function (v) {this.x += v.x; this.y += v.y; return this}
+
+// vector class
+function Vector (x, y) {
+	this.x = x
+	this.y = y
+}
+
+Vector.prototype.add = function (v) {this.x += v.x; this.y += v.y; return this}
+Vector.prototype.scale = function (s) {this.x *= s; this.y *= s; return this}
+Vector.prototype.fromPoints = function (p1, p2) {this.x = p2.x - p1.x; this.y = p2.y - p1.y; return this}
+Vector.prototype.reflect = function (direction) {
+	if (direction == 'horizontal')
+		this.y *= -1
+	else if (direction == 'vertical')
+		this.x *= -1
+
+	return this
 }
