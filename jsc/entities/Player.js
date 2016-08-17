@@ -57,6 +57,8 @@ const Player = function Player (sprite) {
 			position.moveByVector(velocity)
 	}
 
+	this.circleColided = (p, r) => r + radius >= position.distanceTo(p)
+
 	this.render = function playerRender (con) {
 		let index = active ? 5 : 0
 		spritesheet.draw(index, position.x, position.y)

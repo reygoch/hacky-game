@@ -155,10 +155,12 @@ function Point (x, y) {
 	this.x = x
 	this.y = y
 }
-
 Point.prototype.moveTo = function (x, y) {this.x = x; this.y = y; return this}
 Point.prototype.moveToPoint = function (point) {this.x = point.x; this.y = point.y; return this}
 Point.prototype.moveByVector = function (v) {this.x += v.x; this.y += v.y; return this}
+Point.prototype.distanceTo = function (point) {
+	return Math.sqrt(Math.pow(this.x - point.x, 2) + Math.pow(this.y - point.y, 2))
+}
 
 // vector class
 function Vector (x, y) {
