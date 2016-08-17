@@ -81,10 +81,25 @@ const Hacky = function Hacky (options) {
 		starSprite.draw(80, 80)
 	}
 
-	// event subscription
-	can.addEventListener('mouseup', (e) => {data.mouse.down = false; data.mouse.up = true})
-	can.addEventListener('mousedown', (e) => {data.mouse.down = true; data.mouse.up = false})
-	can.addEventListener('mousemove', (e) => {data.mouse.position.moveTo(e.offsetX, e.offsetY)})
+	// event handlers
+	const mouseup = (e) => {data.mouse.down = false; data.mouse.up = true}
+	const mousedown = (e) => {data.mouse.down = true; data.mouse.up = false}
+	const mousemove = (e) => {data.mouse.position.moveTo(e.offsetX, e.offsetY)}
+
+	const touchmove = (e) => {
+		const touch = e.touches[0]
+		data.mouse.position.moveTo(touch.offsetX, touch.offsetY)
+	}
+
+	// mouse event subscriptions
+	can.addEventListener('mouseup', mouseup)
+	can.addEventListener('mousedown', mousedown)
+	can.addEventListener('mousemove', mousemove)
+
+	// touch event subscriptions
+	can.addEventListener('touchend', mouseup)
+	can.addEventListener('touchstart', mousedown)
+	can.addEventListener('touchmove', touchmove)
 }
 
 // utility for simply drawing images on canvas
