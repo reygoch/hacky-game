@@ -87,8 +87,9 @@ const Hacky = function Hacky (options) {
 	const mousemove = (e) => {data.mouse.position.moveTo(e.offsetX, e.offsetY)}
 
 	const touchmove = (e) => {
-		const touch = e.touches[0]
-		data.mouse.position.moveTo(touch.offsetX, touch.offsetY)
+		const rect = e.target.getBoundingClientRect()
+		const touch = e.changedTouches[0]
+		data.mouse.position.moveTo(touch.pageX - rect.left, touch.pageY - rect.top)
 	}
 
 	// mouse event subscriptions
