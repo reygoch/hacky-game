@@ -12,7 +12,9 @@ const enemySprite =
 
 const game = new Hacky()
 	  game.addToScene(player)
+
 	  for (i = 0; i < 10; i++)
 	  	game.addToScene(new Enemy(enemySprite, player))
+
 	  game.start()
 	  game.embed()

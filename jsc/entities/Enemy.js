@@ -6,7 +6,7 @@ const Enemy = function Enemy (sprite, player) {
 	let radius = 10
 	const position = new Point(0, 0)
 	const velocity = new Vector(0, 0)
-	const maxSpeed = 3
+	const maxSpeed = 6
 
 	const randomPosition = (w, h) => {
 		position.x = Math.random() * w
@@ -30,7 +30,7 @@ const Enemy = function Enemy (sprite, player) {
 			.fromPoints(position, target)
 			.sub(velocity)
 			.normalize()
-			.scale(2)
+			.scale(1)
 
 		velocity.add(steering).normalize().scale(maxSpeed)
 
