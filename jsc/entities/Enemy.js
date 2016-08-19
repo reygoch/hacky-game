@@ -4,8 +4,9 @@ const Enemy = function Enemy (sprite, player) {
 	let position = new Point(0, 0)
 	let velocity = new Vector(0, 0)
 
+	const speed = 5
 	const radius = 10
-	const maxSpeed = 6
+	const attack = 15
 
 	const randomPosition = (w, h) => {
 		return new Point(Math.random() * w, Math.random() * h)
@@ -14,15 +15,17 @@ const Enemy = function Enemy (sprite, player) {
 	this.init = function enemyInit (con, data) {
 		const w = data.world
 		position = randomPosition(w.width, w.height)
-		velocity = Vector.fromPoints(position, player.position()).normalize(maxSpeed)
+		velocity = Vector.fromPoints(position, player.position()).normalize(speed)
 		sprite.setContext(con)
 	}
 
 	this.update = function enemyUpdate (dlt, data) {
 		const w = data.world
 
-		if (player.circleColided(position, radius))
+		if (player.circleColided(position, radius)) {
+			player.takeDamage(attack)
 			position = randomPosition(w.width, w.height)
+		}
 
 		const steering = Vector
 			.fromPoints(position, player.position())
@@ -30,7 +33,7 @@ const Enemy = function Enemy (sprite, player) {
 			.normalize()
 			.scaleBy(1)
 
-		velocity = velocity.add(steering).normalize().scaleBy(maxSpeed)
+		velocity = velocity.add(steering).normalize().scaleBy(speed)
 
 		position = position.moveByVector(velocity)
 	}

@@ -1,20 +1,29 @@
-const playerImg =
+const game = new Hacky({init : init})
+
+var everythingLoaded = setInterval(function() {
+  if (/loaded|complete/.test(document.readyState)) {
+    clearInterval(everythingLoaded);
+    game.start()
+    game.embed()
+  }
+}, 10);
+
+
+function init (con, data) {
+	const playerImg =
 	document.getElementById('player-spritesheet')
 
-const enemyImg =
-	document.getElementById('star')
+	const enemyImg =
+		document.getElementById('star')
 
-const player =
-	new Player(new Sprite(playerImg))
+	const player =
+		new Player(new Sprite(playerImg))
 
-const enemySprite =
-	new Sprite(enemyImg, true)
+	const enemySprite =
+		new Sprite(enemyImg, true)
 
-const game = new Hacky()
-	  game.addToScene(player)
+	game.addToScene(player)
 
-	  for (i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 	  	game.addToScene(new Enemy(enemySprite, player))
-
-	  game.start()
-	  game.embed()
+}

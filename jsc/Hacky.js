@@ -42,7 +42,14 @@ const Hacky = function Hacky (options) {
 	this.mouse = () => data.mouse.position
 
 	// engine loop functions
-	const init = () => {scn.forEach((x) => {x.init(con, data)})}
+	const init = opt.init || (() => {})
+
+	const initialise = () => {
+		init(con, data)
+		scn.forEach(
+			(x) => {x.init(con, data)}
+		)
+	}
 
 	const update = (dlt) => {scn.forEach((x) => {x.update(dlt, data)})}
 	const render = (con) => {this.clear(); scn.forEach((x) => {x.render(con)})}
@@ -68,7 +75,7 @@ const Hacky = function Hacky (options) {
 
 	// utility functions
 	this.embed = () => {doc.body.appendChild(can)}
-	this.start = () => {init(); frameID = requestAnimationFrame(mloopy)}
+	this.start = () => {initialise(); frameID = requestAnimationFrame(mloopy)}
 	this.clear = () => {con.clearRect(0, 0, can.width, can.height)}
 
 	this.addToUI = (entity) => {ui.push(entity)}
