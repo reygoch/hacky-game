@@ -1,22 +1,20 @@
 const Enemy = function Enemy (sprite, player) {
 	if (!sprite || !player) return
 
-	const target = player.position()
+	let position = new Point(0, 0)
+	let velocity = new Vector(0, 0)
 
-	let radius = 10
-	const position = new Point(0, 0)
-	const velocity = new Vector(0, 0)
+	const radius = 10
 	const maxSpeed = 6
 
 	const randomPosition = (w, h) => {
-		position.x = Math.random() * w
-		position.y = Math.random() * h
+		return new Point(Math.random() * w, Math.random() * h)
 	}
 
 	this.init = function enemyInit (con, data) {
 		const w = data.world
-		randomPosition(w.width, w.height)
-		velocity.fromPoints(position, target).normalize(maxSpeed)
+		position = randomPosition(w.width, w.height)
+		velocity = Vector.fromPoints(position, player.position()).normalize(maxSpeed)
 		sprite.setContext(con)
 	}
 
@@ -24,17 +22,17 @@ const Enemy = function Enemy (sprite, player) {
 		const w = data.world
 
 		if (player.circleColided(position, radius))
-			randomPosition(w.width, w.height)
+			position = randomPosition(w.width, w.height)
 
-		const steering = new Vector(0, 0)
-			.fromPoints(position, target)
+		const steering = Vector
+			.fromPoints(position, player.position())
 			.sub(velocity)
 			.normalize()
-			.scale(1)
+			.scaleBy(1)
 
-		velocity.add(steering).normalize().scale(maxSpeed)
+		velocity = velocity.add(steering).normalize().scaleBy(maxSpeed)
 
-		position.moveByVector(velocity)
+		position = position.moveByVector(velocity)
 	}
 
 	this.render = function enemyRender (con) {

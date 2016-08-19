@@ -3,19 +3,22 @@ const Player = function Player (sprite) {
 	
 	let health = 100
 	let active = false
+	let position = new Point(0, 0)
+	let velocity = new Vector(0, 0)
 
 	const radius = 35
 	const deceleration = 0.95
-	const position = new Point(0, 0)
-	const velocity = new Vector(0, 0)
 	const spritesheet = new Spritesheet(sprite, 5, 2)
 
 	const contains = (point) => Math.sqrt(Math.pow(position.x - point.x, 2) + Math.pow(position.y - point.y, 2)) <= radius
 	
 	this.init = function playerInit (con, data) {
 		sprite.setContext(con)
-		position.x = data.world.width / 2
-		position.y = data.world.height / 2
+
+		position = new Point(
+			data.world.width / 2,
+			data.world.height / 2
+		)
 	}
 
 	this.update = function playerUpdate (dlt, data) {
@@ -23,15 +26,15 @@ const Player = function Player (sprite) {
 		const w = data.world
 
 		if (active)
-			velocity.fromPoints(position, m.position)
+			velocity = Vector.fromPoints(position, m.position)
 		else
-			velocity.scale(deceleration)
+			velocity = velocity.scaleBy(deceleration)
 
 		if (position.x - radius < 0 || position.x + radius > w.width)
-			velocity.reflect('vertical')
+			velocity = velocity.reflect('vertical')
 
 		if (position.y - radius < 0 || position.y + radius > w.height)
-			velocity.reflect('horizontal')
+			velocity = velocity.reflect('horizontal')
 
 		// begin -- glitch fix
 		if (position.y - radius < 0)
@@ -52,9 +55,9 @@ const Player = function Player (sprite) {
 			active = false
 
 		if (active)
-			position.moveToPoint(m.position)
+			position = new Point(m.position.x, m.position.y)
 		else
-			position.moveByVector(velocity)
+			position = position.moveByVector(velocity)
 	}
 
 	this.circleColided = (p, r) => r + radius >= position.distanceTo(p)
