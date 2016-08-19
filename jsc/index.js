@@ -24,6 +24,6 @@ function init (con, data) {
 
 	game.addToScene(player)
 
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 20; i++)
 	  	game.addToScene(new Enemy(enemySprite, player))
 }

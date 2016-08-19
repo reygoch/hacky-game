@@ -4,9 +4,9 @@ const Enemy = function Enemy (sprite, player) {
 	let position = new Point(0, 0)
 	let velocity = new Vector(0, 0)
 
-	const speed = 5
+	const speed = 3
 	const radius = 10
-	const attack = 15
+	const attack = 20
 
 	const randomPosition = (w, h) => {
 		return new Point(Math.random() * w, Math.random() * h)
@@ -22,16 +22,21 @@ const Enemy = function Enemy (sprite, player) {
 	this.update = function enemyUpdate (dlt, data) {
 		const w = data.world
 
+		let target = player.position()
+
+		if (Math.random()*100 <= 70)
+			target = randomPosition(w.width, w.height)
+
 		if (player.circleColided(position, radius)) {
 			player.takeDamage(attack)
 			position = randomPosition(w.width, w.height)
 		}
 
 		const steering = Vector
-			.fromPoints(position, player.position())
+			.fromPoints(position, target)
 			.sub(velocity)
 			.normalize()
-			.scaleBy(1)
+			.scaleBy(0.2)
 
 		velocity = velocity.add(steering).normalize().scaleBy(speed)
 

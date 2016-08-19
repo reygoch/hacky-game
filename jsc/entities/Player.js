@@ -10,8 +10,8 @@ const Player = function Player (sprite) {
 	const deceleration = 0.95
 	const spritesheet = new Spritesheet(sprite, 5, 2)
 
-	const healthGain = 1
-	const healthLoss = 0.6
+	const healthGain = 1.5
+	const healthLoss = 0.5
 	const healthLevels = [20, 40, 60, 80, 100]
 
 	const contains = (point) => Math.sqrt(Math.pow(position.x - point.x, 2) + Math.pow(position.y - point.y, 2)) <= radius
