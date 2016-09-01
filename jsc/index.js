@@ -8,7 +8,6 @@ var everythingLoaded = setInterval(function() {
   }
 }, 10);
 
-
 function init (con, data) {
 	const playerImg =
 	document.getElementById('player-spritesheet')
@@ -23,6 +22,7 @@ function init (con, data) {
 		new Sprite(enemyImg, true)
 
 	game.addToScene(player)
+	game.addToUI(new ScoreDisplay(player))
 
 	for (i = 0; i < 20; i++)
 	  	game.addToScene(new Enemy(enemySprite, player))

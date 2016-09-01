@@ -46,13 +46,32 @@ const Hacky = function Hacky (options) {
 
 	const initialise = () => {
 		init(con, data)
+		
 		scn.forEach(
-			(x) => {x.init(con, data)}
+			x => {x.init(con, data)}
+		)
+
+		ui.forEach(
+			x => {x.init(con, data)}
 		)
 	}
 
-	const update = (dlt) => {scn.forEach((x) => {x.update(dlt, data)})}
-	const render = (con) => {this.clear(); scn.forEach((x) => {x.render(con)})}
+	const update = (dlt) => {
+		scn.forEach((x) => {x.update(dlt, data)})
+		ui.forEach((x) => {x.update(dlt, data)})
+	}
+
+	const render = (con) => {
+		this.clear()
+
+		scn.forEach(
+			x => {x.render(con)}
+		)
+
+		ui.forEach(
+			x => {x.render(con)}
+		)
+	}
 
 	// main game loop
 	const mloopy = (timeStamp) => {
@@ -68,7 +87,7 @@ const Hacky = function Hacky (options) {
 
 		update(data.delta)
 
-		render()
+		render(con)
 
 		frameID = requestAnimationFrame(mloopy)
 	}
@@ -80,15 +99,6 @@ const Hacky = function Hacky (options) {
 
 	this.addToUI = (entity) => {ui.push(entity)}
 	this.addToScene = (entity) => {scn.push(entity)}
-
-	this.test = () => {
-		let starSprite = new Sprite(doc.getElementById('star'), con, true)
-		let playerSprite = new Sprite(doc.getElementById('player-spritesheet'), con)
-		let playerSpritesheet = new Spritesheet(playerSprite, 5, 2)
-
-		playerSpritesheet.draw(0, 35, 35)
-		starSprite.draw(80, 80)
-	}
 
 	// event handlers
 	const mouseup = (e) => {data.mouse.down = false; data.mouse.up = true}

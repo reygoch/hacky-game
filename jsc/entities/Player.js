@@ -1,6 +1,7 @@
 const Player = function Player (sprite) {
 	if (!sprite) return
 	
+	let score = 0
 	let health = 100
 	let active = false
 	let position = new Point(0, 0)
@@ -28,6 +29,8 @@ const Player = function Player (sprite) {
 	this.takeDamage = function playerTakeDamage(x) {
 		if (active)
 			health = Math.max(0, health - x)
+		else
+			score += 1
 	}
 
 	this.update = function playerUpdate (dlt, data) {
@@ -85,4 +88,5 @@ const Player = function Player (sprite) {
 
 
 	this.position = () => position
+	this.score = () => score
 }
